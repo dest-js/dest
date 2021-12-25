@@ -1,0 +1,12 @@
+{
+  "name": "core",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "peerDependencies": {
+    "discord.js": "^13.4.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.5.4"
+  }
+}
