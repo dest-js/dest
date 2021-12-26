@@ -1,5 +1,5 @@
 import { Client, ClientOptions } from 'discord.js'
-import { MiddlewareModule } from './middleware/middleware-moddule'
+import { MiddlewareModule } from './middleware/middleware-module'
 
 export class DestApplication extends Client {
   private middlewareModule = new MiddlewareModule()
@@ -7,7 +7,7 @@ export class DestApplication extends Client {
     client: this,
   }
 
-  public constructor(option?: ClientOptions) {
+  constructor(option?: ClientOptions) {
     super(option)
   }
 
@@ -24,8 +24,12 @@ export class DestApplication extends Client {
     this.context = context
   }
 
-  public applyMiddleware(middleware: { new () }) {
+  public applyMiddleware(middleware: { new () }, ...middlewares: { new () }[]) {
     this.middlewareModule.apply(middleware)
+
+    middlewares.map((middleware) => {
+      this.middlewareModule.apply(middleware)
+    })
   }
 
   public login(token: string): Promise<string> {
