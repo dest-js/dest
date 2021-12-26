@@ -15,6 +15,6 @@ export function Execute(): MethodDecorator {
       contextIndex: contextIndex,
     }
 
-    return Reflect.defineMetadata('middleware:execute', metadata, target)
+    return Reflect.defineMetadata('execute', metadata, target)
   }
 }

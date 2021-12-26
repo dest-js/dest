@@ -19,7 +19,7 @@ export class MiddlewareModule {
 
     const c = new middleware()
 
-    const execute = Reflect.getMetadata('middleware:execute', c)
+    const execute = Reflect.getMetadata('execute', c)
 
     this.container.apply(token, middleware, { ...config, execute })
   }
