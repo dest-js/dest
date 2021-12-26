@@ -1,8 +1,4 @@
-import {
-  MiddlewareConfig,
-  MiddlewareMetadata,
-  MiddlewareMethod,
-} from './config'
+import { MiddlewareMethod } from './config'
 import { MiddlewareContainer, MiddlewareReturn } from './midleware-container'
 import * as hash from 'object-hash'
 
@@ -15,6 +11,10 @@ export class MiddlewareModule {
 
     if (!config) {
       throw new Error('Middleware must have @Middleware decorator')
+    }
+
+    if (this.container.get(token).mid_class) {
+      throw new Error('Middleware already exists')
     }
 
     const c = new middleware()
