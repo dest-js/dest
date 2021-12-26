@@ -4,28 +4,24 @@ import {
   MiddlewareMethod,
 } from './config'
 import { MiddlewareContainer, MiddlewareReturn } from './midleware-container'
-import { hash } from 'object-hash'
+import * as hash from 'object-hash'
 
 export class MiddlewareModule {
   private readonly container = new MiddlewareContainer()
 
   public apply(middleware: { new (): any }) {
-    const config = Reflect.getOwnMetadata('middleware', middleware)
+    const config = Reflect.getOwnMetadata('middleware:config', middleware)
     const token = hash(middleware)
 
     if (!config) {
       throw new Error('Middleware must have @Middleware decorator')
     }
 
-    if (!(config instanceof MiddlewareConfig)) {
-      throw new Error('Middleware must has middleware options')
-    }
+    const c = new middleware()
 
-    if (!(config instanceof MiddlewareMetadata)) {
-      throw new Error('Middleware must has @Execute decorator')
-    }
+    const execute = Reflect.getMetadata('middleware:execute', c)
 
-    this.container.apply(token, middleware, config)
+    this.container.apply(token, middleware, { ...config, execute })
   }
 
   public getMiddlewareByMethod(method: MiddlewareMethod): {
@@ -50,13 +46,7 @@ export class MiddlewareModule {
 
     const array = []
 
-    if (Array.isArray(contextIndex)) {
-      contextIndex.forEach((index) => {
-        array[index] = context
-      })
-    } else {
-      array[contextIndex] = context
-    }
+    array[contextIndex] = context[0]
 
     try {
       const result = await (mid_class[config.execute.name] as Function).call(

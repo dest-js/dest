@@ -17,29 +17,19 @@ export interface MiddlewareConfig {
 export interface MiddlewareMetadata extends MiddlewareConfig {
   execute: {
     name: string
-    contextIndex: number[] | number
+    contextIndex: number
   }
 }
 
 export class MiddlewareConfig {
   public name?: string
   public method: MiddlewareMethod
-
-  constructor(config: MiddlewareConfig) {
-    this.name = config.name
-    this.method = config.method
-  }
 }
 
 export class MiddlewareMetadata extends MiddlewareConfig {
   public execute: {
     name: string
-    contextIndex: number[] | number
-  }
-
-  constructor(config: MiddlewareMetadata) {
-    super(config)
-    this.execute = config.execute
+    contextIndex: number
   }
 }
 
